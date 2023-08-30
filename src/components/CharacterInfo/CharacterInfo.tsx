@@ -1,26 +1,22 @@
 import React from 'react';
 
 interface Props {
-  superHeroName: string;
-  superHeroDescription: string;
-  superHeroImage: string;
+  heroName: string;
+  heroDescription: string;
+  heroImage: string;
 }
 
-const info = ({
-  superHeroName,
-  superHeroDescription,
-  superHeroImage,
-}: Props) => {
+const info = ({ heroName, heroDescription, heroImage }: Props) => {
   return (
     <div className="row">
       <div className="col s12 m7">
         <div className="card">
           <div className="card-image">
-            <img src={superHeroImage} alt={superHeroName} />
-            <span className="card-title">{superHeroName}</span>
+            <img src={heroImage} alt={heroName} />
+            <span className="card-title">{heroName}</span>
           </div>
           <div className="card-content">
-            <p>{superHeroDescription}</p>
+            <p>{heroDescription}</p>
           </div>
         </div>
       </div>

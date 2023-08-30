@@ -11,26 +11,26 @@ class GetCharacter extends Component {
   readonly hash: string;
 
   state = {
-    superHeroId: null,
-    superHeroName: null,
-    superHeroDescription: null,
-    superHeroImage: null,
-    superHeroComics: [],
+    heroId: null,
+    heroName: null,
+    heroDescription: null,
+    heroImage: null,
+    comicList: [],
   };
 
-  updateSuperHeroName = (event: any) => {
-    this.setState({ superHeroName: event.target.value });
+  updateCharacterName = (event: any) => {
+    this.setState({ heroName: event.target.value });
   };
 
   handleKeyPress = (event: any) => {
     if (event.key === 'Enter') {
-      this.getSuperHeroInfo();
+      this.getCharacterInfo();
     }
   };
 
-  getSuperHeroInfo = async () => {
-    const { superHeroName } = this.state;
-    const getCharacterInfoUrl = `http://gateway.marvel.com/v1/public/characters?name=${superHeroName}&ts=${this.ts}&apikey=${this.publicKey}&hash=${this.hash}`;
+  getCharacterInfo = async () => {
+    const { heroName } = this.state;
+    const getCharacterInfoUrl = `http://gateway.marvel.com/v1/public/characters?name=${heroName}&ts=${this.ts}&apikey=${this.publicKey}&hash=${this.hash}`;
     const jsonResponse = await axios.get(getCharacterInfoUrl);
 
     if (jsonResponse.data.data.results.length === 0) return;
@@ -39,33 +39,33 @@ class GetCharacter extends Component {
         jsonResponse.data.data.results[0];
 
       this.setState({
-        superHeroId: id,
-        superHeroName: name,
-        superHeroDescription: description,
-        superHeroImage: thumbnail.path + '.' + thumbnail.extension,
+        heroId: id,
+        heroName: name,
+        heroDescription: description,
+        heroImage: thumbnail.path + '.' + thumbnail.extension,
       });
     }
   };
 
   componentDidUpdate(): void {
-    if (this.state.superHeroId !== null) {
-      this.getSuperHeroComicList();
+    if (this.state.heroId !== null) {
+      this.getComicList();
     }
   }
 
-  getSuperHeroComicList = async () => {
-    const { superHeroId } = this.state;
-    const getComicListUrl = `http://gateway.marvel.com/v1/public/characters/${superHeroId}/comics?format=comic&ts=${this.ts}&apikey=${this.publicKey}&hash=${this.hash}`;
+  getComicList = async () => {
+    const { heroId } = this.state;
+    const getComicListUrl = `http://gateway.marvel.com/v1/public/characters/${heroId}/comics?format=comic&ts=${this.ts}&apikey=${this.publicKey}&hash=${this.hash}`;
     const jsonResponse = await axios.get(getComicListUrl);
 
     const comicList = jsonResponse.data.data.results[0];
-    this.setState({ superHeroComics: comicList });
+    this.setState({ comicList: comicList });
   };
 
   constructor(props: any) {
     super(props);
-    this.updateSuperHeroName = this.updateSuperHeroName.bind(this);
-    this.getSuperHeroInfo = this.getSuperHeroInfo.bind(this);
+    this.updateCharacterName = this.updateCharacterName.bind(this);
+    this.getCharacterInfo = this.getCharacterInfo.bind(this);
 
     this.publicKey = process.env.REACT_APP_PUBLIC_KEY || '';
     this.privateKey = process.env.REACT_APP_PRIVATE_KEY || '';
@@ -74,12 +74,7 @@ class GetCharacter extends Component {
   }
 
   render() {
-    const {
-      superHeroName,
-      superHeroDescription,
-      superHeroImage,
-      superHeroComics,
-    } = this.state;
+    const { heroName, heroDescription, heroImage, comicList } = this.state;
 
     return (
       <div className="row">
@@ -88,21 +83,20 @@ class GetCharacter extends Component {
           <div className="input-field col s6">
             <input
               placeholder="Search Your Character"
-              id="superhero_name"
+              id="hero_name"
               type="text"
               className="validate"
-              onChange={this.updateSuperHeroName}
+              onChange={this.updateCharacterName}
               onKeyUpCapture={this.handleKeyPress}
             />
           </div>
-          {superHeroName && superHeroDescription && superHeroImage && (
+          {heroName && heroDescription && heroImage && (
             <CharacterInfo
-              superHeroName={superHeroName}
-              superHeroDescription={superHeroDescription}
-              superHeroImage={superHeroImage}
+              heroName={heroName}
+              heroDescription={heroDescription}
+              heroImage={heroImage}
             ></CharacterInfo>
           )}
-          {superHeroComics && <ComicsInfo comicList={superHeroComics} />}
         </div>
         <div className="col s3"> </div>
       </div>
