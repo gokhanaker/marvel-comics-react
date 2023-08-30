@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Component } from 'react';
 import md5 from 'md5';
 import CharacterInfo from '../CharacterInfo/CharacterInfo';
-import ComicsInfo from '../ComicsInfo/ComicsInfo';
+import GetComics from '../GetComics/GetComics';
 
 class GetCharacter extends Component {
   readonly publicKey: string;
@@ -15,7 +15,6 @@ class GetCharacter extends Component {
     heroName: null,
     heroDescription: null,
     heroImage: null,
-    comicList: [],
   };
 
   updateCharacterName = (event: any) => {
@@ -47,21 +46,6 @@ class GetCharacter extends Component {
     }
   };
 
-  componentDidUpdate(): void {
-    if (this.state.heroId !== null) {
-      this.getComicList();
-    }
-  }
-
-  getComicList = async () => {
-    const { heroId } = this.state;
-    const getComicListUrl = `http://gateway.marvel.com/v1/public/characters/${heroId}/comics?format=comic&ts=${this.ts}&apikey=${this.publicKey}&hash=${this.hash}`;
-    const jsonResponse = await axios.get(getComicListUrl);
-
-    const comicList = jsonResponse.data.data.results[0];
-    this.setState({ comicList: comicList });
-  };
-
   constructor(props: any) {
     super(props);
     this.updateCharacterName = this.updateCharacterName.bind(this);
@@ -74,7 +58,7 @@ class GetCharacter extends Component {
   }
 
   render() {
-    const { heroName, heroDescription, heroImage, comicList } = this.state;
+    const { heroName, heroDescription, heroImage, heroId } = this.state;
 
     return (
       <div className="row">
@@ -97,6 +81,7 @@ class GetCharacter extends Component {
               heroImage={heroImage}
             ></CharacterInfo>
           )}
+          {heroId && <GetComics heroId={heroId}></GetComics>}
         </div>
         <div className="col s3"> </div>
       </div>
