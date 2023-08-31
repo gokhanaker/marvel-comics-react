@@ -6,6 +6,20 @@ interface prop {
   heroId: number;
 }
 
+interface Comic {
+  id: number;
+  title: string;
+  description: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
+  prices: {
+    type: string;
+    price: number;
+  }[];
+}
+
 class GetComics extends Component<prop> {
   readonly publicKey: string;
   readonly privateKey: string;
@@ -30,7 +44,7 @@ class GetComics extends Component<prop> {
     const getComicListUrl = `http://gateway.marvel.com/v1/public/characters/${heroId}/comics?format=comic&ts=${this.ts}&apikey=${this.publicKey}&hash=${this.hash}`;
     const jsonResponse = await axios.get(getComicListUrl);
 
-    const comicList = jsonResponse.data.data.results[0];
+    const comicList: Comic[] = jsonResponse.data.data.results;
     console.log('comicList', comicList);
     this.setState({ comicList: comicList });
   };
@@ -42,7 +56,37 @@ class GetComics extends Component<prop> {
 
   render() {
     const { comicList } = this.state;
-    return <div>ComicList</div>;
+    return (
+      <div className="row">
+        {comicList.map((comic: Comic) => (
+          <div>
+            <div className="card col s3" key={comic.id}>
+              <div className="card-image">
+                <img
+                  src={comic.thumbnail.path + '.' + comic.thumbnail.extension}
+                  alt={comic.title}
+                  style={{
+                    maxWidth: '300px',
+                    maxHeight: '300px',
+                  }}
+                />
+              </div>
+              <div className="card-content">
+                <h6
+                  style={{
+                    maxWidth: '300px',
+                    fontSize: '12px',
+                  }}
+                >
+                  {comic.title}
+                </h6>
+              </div>
+            </div>
+            <div className="col s1"></div>
+          </div>
+        ))}
+      </div>
+    );
   }
 }
 
