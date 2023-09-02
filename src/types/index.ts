@@ -17,3 +17,7 @@ export interface Comic {
     extension: string;
   };
 }
+
+export interface ComicListInfoProps {
+  comicList: Comic[];
+}

@@ -1,6 +1,10 @@
 import { CharacterInfoProps } from '../../types';
 
-const info = ({ heroName, heroDescription, heroImage }: CharacterInfoProps) => {
+const CharacterInfo = ({
+  heroName,
+  heroDescription,
+  heroImage,
+}: CharacterInfoProps) => {
   return (
     <div className="row">
       <div className="col s3"> </div>
@@ -20,4 +24,4 @@ const info = ({ heroName, heroDescription, heroImage }: CharacterInfoProps) => {
   );
 };
 
-export default info;
+export default CharacterInfo;
