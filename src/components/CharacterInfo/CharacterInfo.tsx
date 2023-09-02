@@ -1,15 +1,10 @@
-import React from 'react';
+import { CharacterInfoProps } from '../../types';
 
-interface Props {
-  heroName: string;
-  heroDescription: string;
-  heroImage: string;
-}
-
-const info = ({ heroName, heroDescription, heroImage }: Props) => {
+const info = ({ heroName, heroDescription, heroImage }: CharacterInfoProps) => {
   return (
     <div className="row">
-      <div className="col s12 m7">
+      <div className="col s3"> </div>
+      <div className="col s6">
         <div className="card">
           <div className="card-image">
             <img src={heroImage} alt={heroName} />
@@ -20,6 +15,7 @@ const info = ({ heroName, heroDescription, heroImage }: Props) => {
           </div>
         </div>
       </div>
+      <div className="col s3"> </div>
     </div>
   );
 };

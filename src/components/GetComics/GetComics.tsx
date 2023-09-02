@@ -1,26 +1,9 @@
 import { Component } from 'react';
 import axios from 'axios';
 import md5 from 'md5';
+import { Comic, GetComicsProps } from '../../types';
 
-interface prop {
-  heroId: number;
-}
-
-interface Comic {
-  id: number;
-  title: string;
-  description: string;
-  thumbnail: {
-    path: string;
-    extension: string;
-  };
-  prices: {
-    type: string;
-    price: number;
-  }[];
-}
-
-class GetComics extends Component<prop> {
+class GetComics extends Component<GetComicsProps> {
   readonly publicKey: string;
   readonly privateKey: string;
   readonly ts: number;
@@ -45,7 +28,6 @@ class GetComics extends Component<prop> {
     const jsonResponse = await axios.get(getComicListUrl);
 
     const comicList: Comic[] = jsonResponse.data.data.results;
-    console.log('comicList', comicList);
     this.setState({ comicList: comicList });
   };
 
