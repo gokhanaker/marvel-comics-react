@@ -1,15 +1,10 @@
 import axios from 'axios';
 import { Component } from 'react';
-import md5 from 'md5';
 import CharacterInfo from '../CharacterInfo/CharacterInfo';
 import GetComics from '../GetComics/GetComics';
+import { initializeApiCallSetup } from '../../utils';
 
 class GetCharacter extends Component {
-  readonly publicKey: string;
-  readonly privateKey: string;
-  readonly ts: number;
-  readonly hash: string;
-
   state = {
     heroId: null,
     heroName: null,
@@ -29,7 +24,8 @@ class GetCharacter extends Component {
 
   getCharacterInfo = async () => {
     const { heroName } = this.state;
-    const getCharacterInfoUrl = `http://gateway.marvel.com/v1/public/characters?name=${heroName}&ts=${this.ts}&apikey=${this.publicKey}&hash=${this.hash}`;
+    const { publicKey, ts, hash } = initializeApiCallSetup();
+    const getCharacterInfoUrl = `http://gateway.marvel.com/v1/public/characters?name=${heroName}&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
     const jsonResponse = await axios.get(getCharacterInfoUrl);
 
     if (jsonResponse.data.data.results.length === 0) return;
@@ -50,11 +46,6 @@ class GetCharacter extends Component {
     super(props);
     this.updateCharacterName = this.updateCharacterName.bind(this);
     this.getCharacterInfo = this.getCharacterInfo.bind(this);
-
-    this.publicKey = process.env.REACT_APP_PUBLIC_KEY || '';
-    this.privateKey = process.env.REACT_APP_PRIVATE_KEY || '';
-    this.ts = new Date().getTime();
-    this.hash = md5(this.ts + this.privateKey + this.publicKey);
   }
 
   render() {

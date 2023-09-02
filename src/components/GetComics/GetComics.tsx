@@ -1,30 +1,21 @@
 import { Component } from 'react';
 import axios from 'axios';
-import md5 from 'md5';
 import { Comic, GetComicsProps } from '../../types';
+import { initializeApiCallSetup } from '../../utils';
 
 class GetComics extends Component<GetComicsProps> {
-  readonly publicKey: string;
-  readonly privateKey: string;
-  readonly ts: number;
-  readonly hash: string;
-
   state = {
     comicList: [],
   };
 
   constructor(props: any) {
     super(props);
-    this.publicKey = process.env.REACT_APP_PUBLIC_KEY || '';
-    this.privateKey = process.env.REACT_APP_PRIVATE_KEY || '';
-    this.ts = new Date().getTime();
-    this.hash = md5(this.ts + this.privateKey + this.publicKey);
-
     this.getComicList = this.getComicList.bind(this);
   }
 
   getComicList = async (heroId: number) => {
-    const getComicListUrl = `http://gateway.marvel.com/v1/public/characters/${heroId}/comics?format=comic&ts=${this.ts}&apikey=${this.publicKey}&hash=${this.hash}`;
+    const { publicKey, ts, hash } = initializeApiCallSetup();
+    const getComicListUrl = `http://gateway.marvel.com/v1/public/characters/${heroId}/comics?format=comic&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
     const jsonResponse = await axios.get(getComicListUrl);
 
     const comicList: Comic[] = jsonResponse.data.data.results;
