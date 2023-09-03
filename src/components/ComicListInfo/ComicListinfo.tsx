@@ -32,7 +32,6 @@ const ComicListInfo = ({ comicList }: ComicListInfoProps) => {
               </h6>
             </div>
           </div>
-          <div className="col s1"></div>
         </div>
       ))}
     </div>

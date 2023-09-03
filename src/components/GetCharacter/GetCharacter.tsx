@@ -58,28 +58,24 @@ class GetCharacter extends Component {
 
     return (
       <div className="row">
-        <div className="col s4"></div>
-        <div className="row">
-          <div className="input-field col s4">
-            <input
-              placeholder="Search Your Character"
-              id="heroName"
-              type="text"
-              className="validate"
-              onChange={this.updateCharacterName}
-              onKeyUpCapture={this.handleKeyPress}
-            />
-          </div>
-          {heroName && heroDescription && heroImage && (
-            <CharacterInfo
-              heroName={heroName}
-              heroDescription={heroDescription}
-              heroImage={heroImage}
-            ></CharacterInfo>
-          )}
-          {heroId && <GetComics heroId={heroId}></GetComics>}
+        <div className="col s2 input-field offset-s5">
+          <input
+            placeholder="Search Your Character"
+            id="heroName"
+            type="text"
+            className="validate"
+            onChange={this.updateCharacterName}
+            onKeyUpCapture={this.handleKeyPress}
+          />
         </div>
-        <div className="col s4"> </div>
+        {heroName && heroDescription && heroImage && (
+          <CharacterInfo
+            heroName={heroName}
+            heroDescription={heroDescription}
+            heroImage={heroImage}
+          ></CharacterInfo>
+        )}
+        {heroId && <GetComics heroId={heroId}></GetComics>}
       </div>
     );
   }
