@@ -2,7 +2,7 @@ import { Component, Fragment } from 'react';
 import axios from 'axios';
 import { Comic, GetComicsProps } from '../../types';
 import { initializeApiCallSetup, marvelComicsAPIBaseUrl } from '../../utils';
-import ComicListInfo from '../ComicListInfo/ComicListinfo';
+import ComicListInfo from '../ComicListInfo/ComicListInfo';
 import M from 'materialize-css';
 
 class GetComics extends Component<GetComicsProps> {

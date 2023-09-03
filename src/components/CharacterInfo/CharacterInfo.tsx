@@ -1,4 +1,5 @@
 import { CharacterInfoProps } from '../../types';
+import './CharacterInfo.scss';
 
 const CharacterInfo = ({
   heroName,
@@ -15,15 +16,7 @@ const CharacterInfo = ({
           <p>{heroDescription}</p>
         </div>
         <div className="card-action center-align">
-          <a
-            style={{
-              fontWeight: 'bold',
-              fontSize: '20px',
-              textAlign: 'center',
-            }}
-          >
-            Comic List is below
-          </a>
+          <a className="card-action-text">Comic List is below</a>
         </div>
       </div>
     </div>
