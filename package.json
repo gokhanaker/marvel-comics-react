@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@types/materialize-css": "^1.0.11",
     "@types/md5": "^2.3.2",
     "prettier": "^3.0.2"
   }

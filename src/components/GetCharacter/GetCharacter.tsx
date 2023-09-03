@@ -3,6 +3,7 @@ import { Component } from 'react';
 import CharacterInfo from '../CharacterInfo/CharacterInfo';
 import GetComics from '../GetComics/GetComics';
 import { initializeApiCallSetup, marvelComicsAPIBaseUrl } from '../../utils';
+import M from 'materialize-css';
 
 class GetCharacter extends Component {
   state = {
@@ -28,7 +29,11 @@ class GetCharacter extends Component {
     const getCharacterInfoUrl = `${marvelComicsAPIBaseUrl}/characters?name=${heroName}&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
     const jsonResponse = await axios.get(getCharacterInfoUrl);
 
-    if (jsonResponse.data.data.results.length === 0) return;
+    if (jsonResponse.data.data.results.length === 0)
+      M.toast({
+        html: 'No marvel character found with that name :(',
+        classes: 'rounded',
+      });
     else {
       const { id, name, description, comics, thumbnail } =
         jsonResponse.data.data.results[0];
@@ -53,12 +58,12 @@ class GetCharacter extends Component {
 
     return (
       <div className="row">
-        <div className="col s3"> </div>
+        <div className="col s4"></div>
         <div className="row">
-          <div className="input-field col s6">
+          <div className="input-field col s4">
             <input
               placeholder="Search Your Character"
-              id="hero_name"
+              id="heroName"
               type="text"
               className="validate"
               onChange={this.updateCharacterName}
@@ -74,7 +79,7 @@ class GetCharacter extends Component {
           )}
           {heroId && <GetComics heroId={heroId}></GetComics>}
         </div>
-        <div className="col s3"> </div>
+        <div className="col s4"> </div>
       </div>
     );
   }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Comic, GetComicsProps } from '../../types';
 import { initializeApiCallSetup, marvelComicsAPIBaseUrl } from '../../utils';
 import ComicListInfo from '../ComicListInfo/ComicListinfo';
+import M from 'materialize-css';
 
 class GetComics extends Component<GetComicsProps> {
   state = {
@@ -27,6 +28,12 @@ class GetComics extends Component<GetComicsProps> {
         'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'
       );
     });
+
+    if (filteredComicList.length === 0)
+      return M.toast({
+        html: 'No marvel comics found :(',
+        classes: 'rounded toast',
+      });
 
     this.setState({ comicList: filteredComicList });
   };
