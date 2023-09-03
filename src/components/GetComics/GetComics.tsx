@@ -1,7 +1,7 @@
 import { Component, Fragment } from 'react';
 import axios from 'axios';
 import { Comic, GetComicsProps } from '../../types';
-import { initializeApiCallSetup } from '../../utils';
+import { initializeApiCallSetup, marvelComicsAPIBaseUrl } from '../../utils';
 import ComicListInfo from '../ComicListInfo/ComicListinfo';
 
 class GetComics extends Component<GetComicsProps> {
@@ -16,11 +16,19 @@ class GetComics extends Component<GetComicsProps> {
 
   getComicList = async (heroId: number) => {
     const { publicKey, ts, hash } = initializeApiCallSetup();
-    const getComicListUrl = `http://gateway.marvel.com/v1/public/characters/${heroId}/comics?format=comic&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
+    const getComicListUrl = `${marvelComicsAPIBaseUrl}/characters/${heroId}/comics?format=comic&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
     const jsonResponse = await axios.get(getComicListUrl);
 
     const comicList: Comic[] = jsonResponse.data.data.results;
-    this.setState({ comicList: comicList });
+
+    const filteredComicList = comicList.filter((comic: Comic) => {
+      return (
+        comic.thumbnail.path !==
+        'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'
+      );
+    });
+
+    this.setState({ comicList: filteredComicList });
   };
 
   componentDidMount(): void {

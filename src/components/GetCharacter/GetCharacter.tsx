@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Component } from 'react';
 import CharacterInfo from '../CharacterInfo/CharacterInfo';
 import GetComics from '../GetComics/GetComics';
-import { initializeApiCallSetup } from '../../utils';
+import { initializeApiCallSetup, marvelComicsAPIBaseUrl } from '../../utils';
 
 class GetCharacter extends Component {
   state = {
@@ -25,7 +25,7 @@ class GetCharacter extends Component {
   getCharacterInfo = async () => {
     const { heroName } = this.state;
     const { publicKey, ts, hash } = initializeApiCallSetup();
-    const getCharacterInfoUrl = `http://gateway.marvel.com/v1/public/characters?name=${heroName}&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
+    const getCharacterInfoUrl = `${marvelComicsAPIBaseUrl}/characters?name=${heroName}&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
     const jsonResponse = await axios.get(getCharacterInfoUrl);
 
     if (jsonResponse.data.data.results.length === 0) return;

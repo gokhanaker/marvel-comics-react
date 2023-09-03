@@ -11,6 +11,8 @@ const ComicListInfo = ({ comicList }: ComicListInfoProps) => {
                 src={comic.thumbnail.path + '.' + comic.thumbnail.extension}
                 alt={comic.title}
                 style={{
+                  display: 'flex',
+                  justifyContent: 'center',
                   maxWidth: '300px',
                   maxHeight: '300px',
                 }}
@@ -19,7 +21,10 @@ const ComicListInfo = ({ comicList }: ComicListInfoProps) => {
             <div className="card-content">
               <h6
                 style={{
-                  maxWidth: '300px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexWrap: 'nowrap',
+                  margin: '0',
                   fontSize: '12px',
                 }}
               >
