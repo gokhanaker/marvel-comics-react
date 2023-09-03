@@ -10,7 +10,7 @@ const ComicListInfo = ({ comicList }: ComicListInfoProps) => {
   return (
     <div className="row">
       {comicList.map((comic: Comic) => (
-        <div className="card col s3" key={comic.id}>
+        <div className="card hoverable small col s3" key={comic.id}>
           <div className="card-image">
             <img
               src={comic.thumbnail.path + '.' + comic.thumbnail.extension}
@@ -25,13 +25,10 @@ const ComicListInfo = ({ comicList }: ComicListInfoProps) => {
           </div>
           <div className="card-content">
             <h6
-              className="text-center"
               style={{
-                display: 'flex',
-                justifyContent: 'center',
-                flexWrap: 'nowrap',
-                margin: '0',
-                fontSize: '12px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                textAlign: 'center',
               }}
             >
               {truncateText(comic.title)}

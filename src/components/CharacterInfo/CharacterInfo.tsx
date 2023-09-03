@@ -7,16 +7,23 @@ const CharacterInfo = ({
 }: CharacterInfoProps) => {
   return (
     <div className="row">
-      <div className="col s4 card offset-s4">
+      <div className="col s4 card hoverable medium offset-s4">
         <div className="card-image">
           <img src={heroImage} alt={heroName} />
-          <span className="card-title">{heroName}</span>
         </div>
         <div className="card-content">
           <p>{heroDescription}</p>
         </div>
-        <div className="card-action">
-          <a>Comic List is below </a>
+        <div className="card-action center-align">
+          <a
+            style={{
+              fontWeight: 'bold',
+              fontSize: '20px',
+              textAlign: 'center',
+            }}
+          >
+            Comic List is below
+          </a>
         </div>
       </div>
     </div>
