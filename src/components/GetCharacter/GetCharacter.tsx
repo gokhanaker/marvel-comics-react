@@ -29,7 +29,11 @@ class GetCharacter extends Component {
     const getCharacterInfoUrl = `${marvelComicsAPIBaseUrl}/characters?name=${heroName}&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
     const jsonResponse = await axios.get(getCharacterInfoUrl);
 
-    if (jsonResponse.data.data.results.length === 0)
+    if (
+      !jsonResponse.data.data ||
+      !jsonResponse.data.data.results ||
+      jsonResponse.data.data.results.length === 0
+    )
       M.toast({
         html: 'No marvel character found with that name :(',
         classes: 'rounded',
