@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import GetComics from '../GetComics';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
+import { mockMarvelApiComicListResponse } from '../../../utils/test-helpers';
 
 jest.mock('../../../utils', () => ({
   initializeApiCallSetup: jest.fn().mockReturnValue({
@@ -60,28 +61,16 @@ describe('GetComics component', () => {
       .onGet(
         'https://gateway.marvel.com/v1/public/characters/10000/comics?format=comic&ts=123&apikey=apiKeyTest&hash=hashTest',
       )
-      .reply(200, {
-        data: {
-          results: [
-            {
-              id: 123,
-              title: 'wolverine comic title',
-              thumbnail: {
-                path: 'wolverine comic thumbnail path',
-              },
-            },
-          ],
-        },
-      });
+      .reply(200, mockMarvelApiComicListResponse);
 
     await getComics.getComicList(mockHeroId);
     expect(mockSetState).toHaveBeenCalledWith({
       comicList: [
         {
-          id: 123,
-          title: 'wolverine comic title',
+          id: mockMarvelApiComicListResponse.data.results[0].id,
+          title: mockMarvelApiComicListResponse.data.results[0].title,
           thumbnail: {
-            path: 'wolverine comic thumbnail path',
+            path: mockMarvelApiComicListResponse.data.results[0].thumbnail.path,
           },
         },
       ],

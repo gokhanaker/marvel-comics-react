@@ -46,3 +46,17 @@ export const mockComicListInfoProps = {
     },
   ],
 };
+
+export const mockMarvelApiComicListResponse = {
+  data: {
+    results: [
+      {
+        id: 123,
+        title: 'wolverine comic title',
+        thumbnail: {
+          path: 'wolverine comic thumbnail path',
+        },
+      },
+    ],
+  },
+};
