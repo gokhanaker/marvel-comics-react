@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import GetCharacter from '../GetCharacter';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { emptyMarvelApiCharacterInfoResponse } from '../../../utils/test-helpers';
 
 jest.mock('../../../utils', () => ({
   initializeApiCallSetup: jest.fn().mockReturnValue({
@@ -46,19 +47,12 @@ describe('GetCharacter component', () => {
 
     test('displaying the toast message to user when no character is found', async () => {
       const getCharacter = new GetCharacter({});
-      const emptyJsonResponse = {
-        data: {
-          data: {
-            results: [],
-          },
-        },
-      };
 
       mockAxios
         .onGet(
           'https://gateway.marvel.com/v1/public/characters?name=null&ts=123&apikey=apiKeyTest&hash=hashTest',
         )
-        .reply(200, emptyJsonResponse);
+        .reply(200, emptyMarvelApiCharacterInfoResponse);
 
       await getCharacter.getCharacterInfo();
 

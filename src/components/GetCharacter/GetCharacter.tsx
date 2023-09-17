@@ -39,7 +39,7 @@ class GetCharacter extends Component {
         classes: 'rounded',
       });
     else {
-      const { id, name, description, comics, thumbnail } =
+      const { id, name, description, thumbnail } =
         jsonResponse.data.data.results[0];
 
       this.setState({
