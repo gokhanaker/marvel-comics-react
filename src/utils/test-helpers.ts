@@ -36,3 +36,17 @@ export const mockCharacterInfoProps = {
   heroImage: 'wolverine image',
   heroDescription: 'wolverine description',
 };
+
+export const mockComicListInfoProps = {
+  comicList: [
+    {
+      id: 123,
+      title: 'wolverine with x-men marvel comic 2020 #1 cover title',
+      description: 'wolverine description',
+      thumbnail: {
+        path: 'path',
+        extension: 'jpg',
+      },
+    },
+  ],
+};
