@@ -6,28 +6,24 @@ export const mockEventToSearchCharacter = {
 
 export const emptyMarvelApiCharacterInfoResponse = {
   data: {
-    data: {
-      results: [],
-    },
+    results: [],
   },
 };
 
 export const marvelApiCharacterInfoResponse = {
   data: {
-    data: {
-      results: [
-        {
-          id: 123,
-          name: 'wolverine',
-          description: 'wolverine description',
-          comics: {},
-          thumbnail: {
-            path: 'path',
-            extension: 'jpg',
-          },
+    results: [
+      {
+        id: 123,
+        name: 'wolverine',
+        description: 'wolverine description',
+        comics: {},
+        thumbnail: {
+          path: 'path',
+          extension: 'jpg',
         },
-      ],
-    },
+      },
+    ],
   },
 };
 

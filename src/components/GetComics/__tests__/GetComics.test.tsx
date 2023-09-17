@@ -22,14 +22,14 @@ describe('GetComics component', () => {
 
   test('componentDidMount method should call getComicList method', () => {
     const getComics = new GetComics({ heroId: mockHeroId });
-    const getComicListMock = jest.fn();
-    getComics.getComicList = getComicListMock;
+    const mockGetComicList = jest.fn();
+    getComics.getComicList = mockGetComicList;
 
     getComics.componentDidMount();
-    expect(getComicListMock).toHaveBeenCalledWith(mockHeroId);
+    expect(mockGetComicList).toHaveBeenCalledWith(mockHeroId);
   });
 
-  test('displaying the toast message when no marvel comic is found', async () => {
+  test('displaying the toast message when no marvel comic is found at marvel api', async () => {
     const getComics = new GetComics({ heroId: mockHeroId });
 
     const mockAxios = new MockAdapter(axios);
@@ -50,7 +50,7 @@ describe('GetComics component', () => {
     expect(toast).toHaveTextContent('No marvel comics found :(');
   });
 
-  test('updating comicList state when marvel comics is found', async () => {
+  test('updating component state when marvel comics is found at marvel api', async () => {
     const getComics = new GetComics({ heroId: mockHeroId });
     const mockSetState = jest.fn();
     getComics.setState = mockSetState;

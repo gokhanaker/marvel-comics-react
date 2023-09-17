@@ -3,7 +3,10 @@ import { render } from '@testing-library/react';
 import GetCharacter from '../GetCharacter';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { emptyMarvelApiCharacterInfoResponse } from '../../../utils/test-helpers';
+import {
+  emptyMarvelApiCharacterInfoResponse,
+  marvelApiCharacterInfoResponse,
+} from '../../../utils/test-helpers';
 
 jest.mock('../../../utils', () => ({
   initializeApiCallSetup: jest.fn().mockReturnValue({
@@ -22,20 +25,20 @@ describe('GetCharacter component', () => {
 
   test('updateCharacterName method should call setState method with heroName', () => {
     const getCharacter = new GetCharacter({});
-    const setStateMock = jest.fn();
-    getCharacter.setState = setStateMock;
+    const mockSetState = jest.fn();
+    getCharacter.setState = mockSetState;
 
     getCharacter.updateCharacterName({ target: { value: 'wolverine' } });
-    expect(setStateMock).toHaveBeenCalledWith({ heroName: 'wolverine' });
+    expect(mockSetState).toHaveBeenCalledWith({ heroName: 'wolverine' });
   });
 
   test('handleKeyPress method should call getCharacterInfo method when enter key is pressed', () => {
     const getCharacter = new GetCharacter({});
-    const getCharacterInfoMock = jest.fn();
-    getCharacter.getCharacterInfo = getCharacterInfoMock;
+    const mockGetCharacterInfo = jest.fn();
+    getCharacter.getCharacterInfo = mockGetCharacterInfo;
 
     getCharacter.handleKeyPress({ key: 'Enter' });
-    expect(getCharacterInfoMock).toHaveBeenCalled();
+    expect(mockGetCharacterInfo).toHaveBeenCalled();
   });
 
   describe('getCharacterInfo method with Marvel Comics API call', () => {
@@ -45,7 +48,7 @@ describe('GetCharacter component', () => {
       mockAxios.reset();
     });
 
-    test('displaying the toast message to user when no character is found', async () => {
+    test('displaying the toast message to user when no character is found at marvel api', async () => {
       const getCharacter = new GetCharacter({});
 
       mockAxios
@@ -61,6 +64,29 @@ describe('GetCharacter component', () => {
       expect(toast).toHaveTextContent(
         'No marvel character found with that name :(',
       );
+    });
+    test('updating component state when marvel character is found at marvel api', async () => {
+      const getCharacter = new GetCharacter({});
+      const mockSetState = jest.fn();
+      getCharacter.setState = mockSetState;
+
+      mockAxios
+        .onGet(
+          'https://gateway.marvel.com/v1/public/characters?name=null&ts=123&apikey=apiKeyTest&hash=hashTest',
+        )
+        .reply(200, marvelApiCharacterInfoResponse);
+
+      await getCharacter.getCharacterInfo();
+      expect(mockSetState).toHaveBeenCalledWith({
+        heroId: marvelApiCharacterInfoResponse.data.results[0].id,
+        heroName: marvelApiCharacterInfoResponse.data.results[0].name,
+        heroDescription:
+          marvelApiCharacterInfoResponse.data.results[0].description,
+        heroImage:
+          marvelApiCharacterInfoResponse.data.results[0].thumbnail.path +
+          '.' +
+          marvelApiCharacterInfoResponse.data.results[0].thumbnail.extension,
+      });
     });
   });
 });
