@@ -6,9 +6,14 @@ const CharacterInfo = ({
   heroDescription,
   heroImage,
 }: CharacterInfoProps) => {
+  const isMobileScreen = window.innerWidth < 768;
   return (
     <div className="row">
-      <div className="col s4 card hoverable medium offset-s4">
+      <div
+        className={`col s4 card hoverable offset-s4 ${
+          isMobileScreen ? 'medium' : ''
+        } `}
+      >
         <div className="card-image">
           <img src={heroImage} alt={heroName} />
         </div>
