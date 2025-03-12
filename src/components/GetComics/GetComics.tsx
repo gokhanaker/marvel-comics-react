@@ -4,6 +4,7 @@ import { Comic, GetComicsProps } from '../../types';
 import { initializeApiCallSetup, marvelComicsAPIBaseUrl } from '../../utils';
 import ComicListInfo from '../ComicListInfo/ComicListInfo';
 import M from 'materialize-css';
+import { fetchComics } from '../../services/apiService';
 
 class GetComics extends Component<GetComicsProps> {
   state = {
@@ -16,26 +17,15 @@ class GetComics extends Component<GetComicsProps> {
   }
 
   getComicList = async (heroId: number) => {
-    const { publicKey, ts, hash } = initializeApiCallSetup();
-    const getComicListUrl = `${marvelComicsAPIBaseUrl}/characters/${heroId}/comics?format=comic&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
-    const jsonResponse = await axios.get(getComicListUrl);
+    const comicList = await fetchComics(heroId);
 
-    const comicList: Comic[] = jsonResponse.data.data.results;
-
-    const filteredComicList = comicList.filter((comic: Comic) => {
-      return (
-        comic.thumbnail.path !==
-        'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'
-      );
-    });
-
-    if (filteredComicList.length === 0)
+    if (comicList.length === 0)
       return M.toast({
         html: 'No marvel comics found :(',
         classes: 'rounded toast',
       });
 
-    this.setState({ comicList: filteredComicList });
+    this.setState({ comicList });
   };
 
   componentDidMount(): void {

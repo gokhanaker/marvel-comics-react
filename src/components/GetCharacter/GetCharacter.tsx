@@ -1,9 +1,8 @@
-import axios from 'axios';
 import { Component } from 'react';
 import CharacterInfo from '../CharacterInfo/CharacterInfo';
 import GetComics from '../GetComics/GetComics';
-import { initializeApiCallSetup, marvelComicsAPIBaseUrl } from '../../utils';
 import M from 'materialize-css';
+import { fetchCharacterInfo } from '../../services/apiService';
 
 class GetCharacter extends Component {
   state = {
@@ -13,11 +12,11 @@ class GetCharacter extends Component {
     heroImage: null,
   };
 
-  updateCharacterName = (event: any) => {
+  updateCharacterName = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ heroName: event.target.value });
   };
 
-  handleKeyPress = (event: any) => {
+  handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       this.getCharacterInfo();
     }
@@ -25,22 +24,21 @@ class GetCharacter extends Component {
 
   getCharacterInfo = async () => {
     const { heroName } = this.state;
-    const { publicKey, ts, hash } = initializeApiCallSetup();
-    const getCharacterInfoUrl = `${marvelComicsAPIBaseUrl}/characters?name=${heroName}&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
-    const jsonResponse = await axios.get(getCharacterInfoUrl);
+    if (!heroName) return;
+
+    const res = await fetchCharacterInfo(heroName);
 
     if (
-      !jsonResponse.data.data ||
-      !jsonResponse.data.data.results ||
-      jsonResponse.data.data.results.length === 0
+      !res.data.data ||
+      !res.data.data.results ||
+      res.data.data.results.length === 0
     )
       M.toast({
         html: 'No marvel character found with that name :(',
         classes: 'rounded',
       });
     else {
-      const { id, name, description, thumbnail } =
-        jsonResponse.data.data.results[0];
+      const { id, name, description, thumbnail } = res.data.data.results[0];
 
       this.setState({
         heroId: id,
