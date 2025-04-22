@@ -1,6 +1,6 @@
 import md5 from 'md5';
 
-export const marvelComicsAPIBaseUrl: string =
+export const MARVEL_COMICS_BASE_URL: string =
   'https://gateway.marvel.com/v1/public';
 
 export const initializeApiCallSetup = () => {

@@ -7,6 +7,9 @@ const truncateText = (text: string, limit = maxLength) => {
   return text.substring(0, limit) + '...';
 };
 
+const getThumbnailUrl = (thumbnail: { path: string; extension: string }) =>
+  `${thumbnail.path}.${thumbnail.extension}`;
+
 const ComicListInfo = ({ comicList }: ComicListInfoProps) => {
   return (
     <div className="row">
@@ -18,7 +21,7 @@ const ComicListInfo = ({ comicList }: ComicListInfoProps) => {
           <div className="card-image">
             <img
               className="comic-image"
-              src={comic.thumbnail.path + '.' + comic.thumbnail.extension}
+              src={getThumbnailUrl(comic.thumbnail)}
               alt={comic.title}
             />
           </div>
