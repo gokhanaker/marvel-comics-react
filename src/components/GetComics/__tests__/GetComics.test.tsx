@@ -4,6 +4,7 @@ import GetComics from '../GetComics';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { mockMarvelApiComicListResponse } from '../../../utils/test-helpers';
+import { MARVEL_COMICS_BASE_URL } from '../../../utils';
 
 jest.mock('../../../utils', () => ({
   initializeApiCallSetup: jest.fn().mockReturnValue({
@@ -11,7 +12,7 @@ jest.mock('../../../utils', () => ({
     ts: '123',
     hash: 'hashTest',
   }),
-  marvelComicsAPIBaseUrl: 'https://gateway.marvel.com/v1/public',
+  MARVEL_COMICS_BASE_URL: 'https://gateway.marvel.com/v1/public',
 }));
 
 describe('GetComics component', () => {

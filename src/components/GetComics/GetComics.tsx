@@ -1,8 +1,8 @@
 import { Component, Fragment } from 'react';
 import { GetComicsProps } from '../../types';
-import ComicListInfo from '../ComicListInfo/ComicListInfo';
 import M from 'materialize-css';
 import { fetchComics } from '../../services/apiService';
+import ComicListInfo from '../ComicListInfo/ComicListinfo';
 
 class GetComics extends Component<GetComicsProps> {
   state = {
