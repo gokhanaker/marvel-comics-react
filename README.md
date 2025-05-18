@@ -2,6 +2,12 @@
 
 This is a mini React app that uses public `Marvel Comics API` as backend.
 
+## Main Dependencies
+
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Materialize CSS](https://materializecss.com/)
+
 ## Marvel Developer Portal & API Keys
 
 To run this mini app, first sign up and obtain `public key` and `private key` from Marvel Developer Portal:

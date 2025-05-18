@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import { mockComicListInfoProps } from '../../../utils/test-helpers';
-import ComicListInfo from '../ComicListinfo';
+import ComicListInfo from '../ComicListInfo';
 
 describe('ComicListInfo component', () => {
   test('renders the component', () => {

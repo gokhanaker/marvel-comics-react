@@ -1,19 +1,22 @@
 import { Component } from 'react';
 import CharacterInfo from '../CharacterInfo/CharacterInfo';
 import GetComics from '../GetComics/GetComics';
-import M from 'materialize-css';
 import { fetchCharacterInfo } from '../../services/apiService';
+import { showToast } from '../../utils';
+import { GetCharacterState } from '../../types';
 
-class GetCharacter extends Component {
-  state = {
+class GetCharacter extends Component<{}, GetCharacterState> {
+  state: GetCharacterState = {
     heroId: null,
     heroName: null,
     heroDescription: null,
     heroImage: null,
+    isLoading: false,
+    error: null,
   };
 
   updateCharacterName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ heroName: event.target.value });
+    this.setState({ heroName: event.target.value, error: null });
   };
 
   handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -24,20 +27,25 @@ class GetCharacter extends Component {
 
   getCharacterInfo = async () => {
     const { heroName } = this.state;
-    if (!heroName) return;
+    if (!heroName) {
+      this.setState({ error: 'Please enter a character name' });
+      return;
+    }
 
-    const res = await fetchCharacterInfo(heroName);
+    this.setState({ isLoading: true, error: null });
 
-    if (
-      !res.data.data ||
-      !res.data.data.results ||
-      res.data.data.results.length === 0
-    )
-      M.toast({
-        html: 'No marvel character found with that name :(',
-        classes: 'rounded',
-      });
-    else {
+    try {
+      const res = await fetchCharacterInfo(heroName);
+
+      if (!res.data.data?.results?.length) {
+        showToast('No marvel character found with that name :(', 'rounded');
+        this.setState({
+          error: 'No marvel character found with that name :(',
+          isLoading: false,
+        });
+        return;
+      }
+
       const { id, name, description, thumbnail } = res.data.data.results[0];
 
       this.setState({
@@ -45,18 +53,24 @@ class GetCharacter extends Component {
         heroName: name,
         heroDescription: description,
         heroImage: thumbnail.path + '.' + thumbnail.extension,
+        isLoading: false,
+        error: null,
       });
+    } catch (error) {
+      this.setState({
+        error: 'Failed to fetch character information. Please try again.',
+        isLoading: false,
+      });
+      showToast(
+        'Failed to fetch character information. Please try again.',
+        'rounded',
+      );
     }
   };
 
-  constructor(props: any) {
-    super(props);
-    this.updateCharacterName = this.updateCharacterName.bind(this);
-    this.getCharacterInfo = this.getCharacterInfo.bind(this);
-  }
-
   render() {
-    const { heroName, heroDescription, heroImage, heroId } = this.state;
+    const { heroName, heroDescription, heroImage, heroId, isLoading, error } =
+      this.state;
 
     return (
       <div className="row">
@@ -68,16 +82,19 @@ class GetCharacter extends Component {
             className="validate"
             onChange={this.updateCharacterName}
             onKeyUpCapture={this.handleKeyPress}
+            disabled={isLoading}
           />
+          {error && <div className="red-text text-darken-2">{error}</div>}
         </div>
-        {heroName && heroDescription && heroImage && (
+        {isLoading && <div>Loading character...</div>}
+        {!isLoading && heroName && heroDescription && heroImage && (
           <CharacterInfo
             heroName={heroName}
             heroDescription={heroDescription}
             heroImage={heroImage}
-          ></CharacterInfo>
+          />
         )}
-        {heroId && <GetComics heroId={heroId}></GetComics>}
+        {!isLoading && heroId && <GetComics heroId={heroId} />}
       </div>
     );
   }
